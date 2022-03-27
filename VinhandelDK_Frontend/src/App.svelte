@@ -1,8 +1,13 @@
 <script>
+import Navbar from "./Components/Navbar/Navbar.svelte";
+
+
 </script>
 
+<Navbar />
+
 <main>
-	
+
 </main>
 
 <style>

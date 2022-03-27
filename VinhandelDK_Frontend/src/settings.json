@@ -1,1 +1,8 @@
-{}
+{
+  "authenticationUrls": {
+    "login": "/auth/login",
+    "signup": "/auth/signup",
+    "changepassword": "/auth/changepassword"
+  },
+  "profile": {}
+}
