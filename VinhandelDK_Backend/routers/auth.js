@@ -5,48 +5,54 @@ import session from "express-session";
 
 const router = Router();
 const saltRounds = 12;
+let userToSend;
 
-console.log(bcrypt);
+async function checkLoginInfo(req, res, next) {
+  const user = req.body;
+  console.log(user);
 
-function checkLoginInfo(req, res, next) {
-  user = {
-    reqquestedUsername: req.params.username,
-    requestedPassword: req.params.password,
-  };
-  foundUser = accountTabel.find((correctUser) => correctUser === user);
-  if (!foundUser) {
-    res.status(404).send("Username or password is not correct");
+  const foundUser = accountTabel.find(
+    (correctUser) => correctUser.username === user.username
+  );
+
+  if (foundUser) {
+    const correctPassword = await bcrypt.compare(
+      user.password,
+      foundUser.password
+    );
+    if (!correctPassword) {
+      res.status(404).send({ message: "Username or password is not correct" });
+    } else {
+      userToSend = foundUser;
+      next();
+    }
   } else {
-    next();
+    res.status(404).send({ message: "Username or password is not correct" });
   }
 }
 
-function createUser(req, res, next) {
-  user = {
-    reqquestedUsername: req.params.username,
-    requestedPassword: req.params.password,
-  };
-  userAlreadyExists = accountTabel.find(
-    (existingUser) => existingUser.username === user.username
+async function createUser(req, res, next) {
+  const userAlreadyExists = accountTabel.find(
+    (existingUser) => existingUser.username === req.body.username
   );
+  console.log(userAlreadyExists);
 
   if (userAlreadyExists) {
     //409: Conflict
-    res
-      .status(409)
-      .send(
-        `User with ${user.reqquestedUsername} already exists. Forgot password?`
-      );
+    res.status(409).send({
+      message: `User with ${req.body.username} already exists. Forgot password?`,
+    });
   } else {
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const user = { username: req.body.username, password: hashedPassword };
+
+    accountTabel.push(user);
     next();
   }
 }
 
-function checkValidPassword(req, res, next) {
-  user = {
-    reqquestedUsername: req.params.username,
-    requestedPassword: req.params.password,
-  };
+async function checkValidPassword(req, res, next) {
+  const user = req.body;
 
   const foundUserIndex = accountTabel.findIndex(
     (requestedUser) => requestedUser.username === user.username
@@ -55,15 +61,24 @@ function checkValidPassword(req, res, next) {
   if (foundUserIndex !== -1) {
     const existingUser = accountTabel[foundUserIndex];
 
-    if (existingUser.password === user.password) {
-      res.status(49).send("Password cannot be the same as old one");
+    const correctPassword = await bcrypt.compare(
+      user.password,
+      existingUser.password
+    );
+
+    if (correctPassword) {
+      res
+        .status(409)
+        .send({ message: "Password cannot be the same as old one" });
     } else {
       const updatedUser = { ...existingUser, ...user, password: user.password };
       accountTabel[foundUserIndex] = updatedUser;
       next();
     }
   } else {
-    res.status(404).send("The user doesn't exist with the specified email");
+    res
+      .status(404)
+      .send({ message: "The user doesn't exist with the specified email" });
   }
 }
 
@@ -73,15 +88,24 @@ function checkValidPassword(req, res, next) {
 
 router.post("/auth/login", checkLoginInfo, (req, res) => {
   req.session.loggedIn = true;
-  res.status(200).send({ data: foundUser });
+  req.session.user = userToSend;
+  res.status(200).send({ session: req.session });
+});
+
+router.get("/auth/signout", (req, res) => {
+  req.session.destroy;
+  userToSend = null;
+  res.status(200).send({ user: userToSend });
 });
 
 router.post("/auth/signup", createUser, (req, res) => {
-  res.status(201).send("User has successfully been created, you may now login");
+  res.status(201).send({
+    data: accountTabel,
+  });
 });
 
 router.patch("/auth/changepassword", checkValidPassword, (req, res) => {
-  res.status(200).send("Password changed successfully");
+  res.status(200).send({ message: "Password changed successfully" });
   //Send a mail to the users email with a recent change
 });
 

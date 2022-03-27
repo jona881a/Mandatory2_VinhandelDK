@@ -1,10 +1,15 @@
 import express, { application } from "express";
+import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import authRouter from "./routers/auth.js";
 
 const app = express();
+
+app.use(express.json());
+app.use(cors());
+
 /*******************************************************/
 /*Setup ratelimiters for authentication and dos attacks*/
 /*******************************************************/
@@ -23,7 +28,7 @@ const baseLimiter = rateLimit({
 });
 
 /********************/
-/*Setup dependencies*/
+/*Setup Middleware*/
 /********************/
 app.use(helmet());
 app.use(
