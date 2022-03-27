@@ -1,4 +1,6 @@
 <script>
+import { navigate } from "svelte-navigator";
+
   import { serverURL, serverEndpoints } from "../../stores/stores.js";
 
   //let fullname;
@@ -24,17 +26,22 @@
         //email: email
       }
       
-      /*await fetch(serverURL + serverEndpoints.Signup, {
+      await fetch($serverURL + $serverEndpoints.authentication.signup, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userCredentials)
-      })
-      .then(res => res.json())
-      .then(data => {
-        
-      }); */
+        body: JSON.stringify(userCredentials)})
+        .then(res => res.json())
+        .then(data => {
+          if(data.message) {
+            displayErrorBox = 'errorBox-display';
+            errorMessage = data.message;
+          } else {
+            navigate("/login", { replace: true });
+          }
+          console.log(data);
+        });
     }
   }
 
