@@ -3,11 +3,11 @@ import { navigate } from "svelte-navigator";
 
   import { serverURL, serverEndpoints } from "../../stores/stores.js";
 
-  //let fullname;
+  let fullname;
+  let email;
   let username;
   let password;
   let confirmPassword;
-  //let email;
 
   let userCredentials;
 
@@ -20,10 +20,10 @@ import { navigate } from "svelte-navigator";
       errorMessage = "The password you have entered does not match up";
     } else {
       userCredentials = {
-        //fullname: fullname,
+        fullname: fullname,
+        email: email,
         username: username,
-        password: password,
-        //email: email
+        password: password
       }
       
       await fetch($serverURL + $serverEndpoints.authentication.signup, {
@@ -50,8 +50,12 @@ import { navigate } from "svelte-navigator";
 <div class="signup-form">
   <h3>Signup</h3>
   <div class={displayErrorBox}>{errorMessage}</div>
-  <!-- <label for="firstname">Full name</label> -->
-  <!-- <input bind:value={fullname} placeholder="eg. John Doe" class="fullname"/> -->
+  <label for="firstname">Full name</label>
+  <input bind:value={fullname} placeholder="eg. John Doe" class="fullname"/>
+
+  <label for="email">Email</label>
+  <input bind:value={email} type="email" placeholder="Email" class="email"/> 
+
   <label for="username">Username</label>
   <input bind:value={username} type="text" placeholder="Username" class="username"/> 
 
@@ -61,8 +65,6 @@ import { navigate } from "svelte-navigator";
   <label for="confirm-password">Confirm Password</label>
   <input bind:value={confirmPassword} type="password" class="confirm-password" />
 
-  <!-- <label for="email">Email</label> -->
-  <!-- <input bind:value={email} type="email" placeholder="Email" class="email"/>  -->
   <br/>
   <button on:click={handleSignUp}>Signup</button>
 </div>

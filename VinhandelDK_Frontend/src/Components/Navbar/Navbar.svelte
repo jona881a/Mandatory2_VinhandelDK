@@ -6,6 +6,8 @@
   import PrivateRoute from "../PrivateRoutes/PrivateRoute.svelte";
   import Profile from "../../Pages/Profile/Profile.svelte";
   import { session } from "../../stores/stores.js";
+import Signup from "../../Pages/Authentication/Signup.svelte";
+import Shop from "../../Pages/Shop/Shop.svelte";
 </script>
 
 <Router>
@@ -16,6 +18,7 @@
     
     <nav>
       <Link to="/">Home</Link>
+      <Link to="/explore">Wine</Link>
       <Link to="/about">About</Link>
       {#if $session}
         <Link to="/profile">Profile</Link>
@@ -26,8 +29,10 @@
   </header>
   <div>
     <Route path="/" component={Homepage}><Homepage/></Route>
+    <Route path="/explore"><Shop/></Route>
     <Route path="about" component={About}><About/></Route>
     <Route path="login"><Login /></Route>
+    <Route path="signup"><Signup /></Route> <!--Even though it isn't a link it can still find the component-->
   </div>
   <PrivateRoute path="profile" let:location>
     <Profile />

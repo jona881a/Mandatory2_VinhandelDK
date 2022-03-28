@@ -12,5 +12,6 @@ export const serverEndpoints = writable({
     signup: "/auth/signup",
     signout: "/auth/signout",
     changepassword: "/auth/changepassword",
+    changeuser: "/auth/changeuser",
   },
 });
