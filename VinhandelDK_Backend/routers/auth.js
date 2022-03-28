@@ -9,7 +9,6 @@ let userToSend;
 
 async function checkLoginInfo(req, res, next) {
   const user = req.body;
-  console.log(user);
 
   const foundUser = accountTabel.find(
     (correctUser) => correctUser.username === user.username
@@ -35,7 +34,6 @@ async function createUser(req, res, next) {
   const userAlreadyExists = accountTabel.find(
     (existingUser) => existingUser.username === req.body.username
   );
-  console.log(userAlreadyExists);
 
   if (userAlreadyExists) {
     //409: Conflict
@@ -44,9 +42,9 @@ async function createUser(req, res, next) {
     });
   } else {
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-    const user = { username: req.body.username, password: hashedPassword };
+    const newUser = { ...req.body, password: hashedPassword };
 
-    accountTabel.push(user);
+    accountTabel.push(newUser);
     next();
   }
 }
@@ -82,6 +80,27 @@ async function checkValidPassword(req, res, next) {
   }
 }
 
+async function changeUser(req, res, next) {
+  const user = req.body;
+
+  console.log(user);
+
+  const userIndex = accountTabel.findIndex(
+    (requestedUser) => requestedUser.username === user.username
+  );
+
+  if (userIndex !== -1) {
+    const userToEdit = accountTabel[userIndex];
+
+    const updatedUser = { ...userToEdit, ...user };
+    accountTabel[userIndex] = updatedUser;
+    userToSend = updatedUser;
+    next();
+  } else {
+    res.status(404).send({ message: "The user cannot be found" });
+  }
+}
+
 /***************************/
 /***********Routes**********/
 /***************************/
@@ -107,6 +126,10 @@ router.post("/auth/signup", createUser, (req, res) => {
 router.patch("/auth/changepassword", checkValidPassword, (req, res) => {
   res.status(200).send({ message: "Password changed successfully" });
   //Send a mail to the users email with a recent change
+});
+
+router.put("/auth/changeuser", changeUser, (req, res) => {
+  res.status(200).send({ changedUser: userToSend });
 });
 
 export default router;
