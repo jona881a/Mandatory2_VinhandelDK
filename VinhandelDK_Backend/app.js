@@ -4,6 +4,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import authRouter from "./routers/auth.js";
+import mailRouter from "./routers/mailer.js";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use("/auth", authLimiter); //Gælder kun routes der starter med auth
 /*********/
 
 app.use(authRouter);
+app.use(mailRouter);
 
 const PORT = process.env.PORT || 3000;
 

@@ -13,4 +13,15 @@ export const accountTabel = [
   },
 ];
 
-export const wineTabel = [];
+export const wineTabel = [
+  {
+    id: 1,
+    origin: "Italia",
+    wineType: "Red",
+    type: "Bottle",
+    grapeVariety: "Zinfandel",
+    yearOfProd: 2020,
+    price: 86,
+    pricePrBox: 300,
+  },
+];

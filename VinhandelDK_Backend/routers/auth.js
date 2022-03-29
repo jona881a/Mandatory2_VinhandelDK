@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import { accountTabel } from "../db.js";
 import session from "express-session";
+import nodemailer from "nodemailer";
 
 const router = Router();
 const saltRounds = 12;
@@ -38,7 +39,7 @@ async function createUser(req, res, next) {
   if (userAlreadyExists) {
     //409: Conflict
     res.status(409).send({
-      message: `User with ${req.body.username} already exists. Forgot password?`,
+      message: `User with ${req.body.username} already exists. `,
     });
   } else {
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
