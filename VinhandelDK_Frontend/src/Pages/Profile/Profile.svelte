@@ -7,7 +7,7 @@
 
   let email;
   let fullname;
-
+  
   async function handleSignOut() {
     const url = $serverURL + $serverEndpoints.authentication.signout;
 
@@ -17,7 +17,7 @@
       $session = data.user;
     });
 
-    navigate("/login",{ replace : true});
+    navigate("/profile",{ replace : true});
   }
 
   async function handleEditUser() {

@@ -18,6 +18,7 @@
     "svelte": "^3.46.4"
   },
   "dependencies": {
+    "nodemailer": "^6.7.3",
     "sirv-cli": "^2.0.0",
     "svelte-navigator": "^3.1.5",
     "sveltestrap": "^5.9.0"

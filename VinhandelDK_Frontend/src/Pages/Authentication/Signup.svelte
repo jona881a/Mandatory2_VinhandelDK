@@ -36,7 +36,7 @@ import { navigate } from "svelte-navigator";
         .then(data => {
           if(data.message) {
             displayErrorBox = 'errorBox-display';
-            errorMessage = data.message;
+            //errorMessage = data.message + ;
           } else {
             navigate("/login", { replace: true });
           }

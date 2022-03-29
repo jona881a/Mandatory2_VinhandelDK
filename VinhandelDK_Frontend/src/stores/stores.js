@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, readable } from "svelte/store";
 
 export const serverURL = writable("http://localhost:3000");
 
@@ -14,4 +14,9 @@ export const serverEndpoints = writable({
     changepassword: "/auth/changepassword",
     changeuser: "/auth/changeuser",
   },
+  mailer: {
+    forgotpassword: "/mail/forgotpassword",
+  },
 });
+
+export const basket = writable(null);

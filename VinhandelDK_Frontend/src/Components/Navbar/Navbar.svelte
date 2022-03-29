@@ -8,6 +8,8 @@
   import { session } from "../../stores/stores.js";
 import Signup from "../../Pages/Authentication/Signup.svelte";
 import Shop from "../../Pages/Shop/Shop.svelte";
+import Basket from "../Basket/Basket.svelte";
+import Forgot from "../../Pages/Authentication/Forgot.svelte";
 </script>
 
 <Router>
@@ -20,6 +22,7 @@ import Shop from "../../Pages/Shop/Shop.svelte";
       <Link to="/">Home</Link>
       <Link to="/explore">Wine</Link>
       <Link to="/about">About</Link>
+      <Link to="/basket">Basket</Link>
       {#if $session}
         <Link to="/profile">Profile</Link>
       {:else}
@@ -29,10 +32,12 @@ import Shop from "../../Pages/Shop/Shop.svelte";
   </header>
   <div>
     <Route path="/" component={Homepage}><Homepage/></Route>
-    <Route path="/explore"><Shop/></Route>
+    <Route path="explore"><Shop/></Route>
     <Route path="about" component={About}><About/></Route>
+    <Route path="basket"><Basket/></Route>
     <Route path="login"><Login /></Route>
     <Route path="signup"><Signup /></Route> <!--Even though it isn't a link it can still find the component-->
+    <Route path="forgot"><Forgot/></Route>
   </div>
   <PrivateRoute path="profile" let:location>
     <Profile />

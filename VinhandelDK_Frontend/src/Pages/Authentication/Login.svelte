@@ -13,7 +13,7 @@
   async function handleSubmit() {
     const url = $serverURL + $serverEndpoints.authentication.login;
     const userCredentials = {username: username, password: password};
-  
+    
     await fetch(url, {
       method: "POST",
       headers: {
@@ -32,7 +32,6 @@
         }
       })
       .catch(error => console.log(error));
-    
   }
   
   </script>
@@ -42,9 +41,11 @@
     <input class="login" bind:value={username} name="username" type="text" placeholder="Username">
       <br/>
     <input class="password" bind:value={password} name="password" type="password" placeholder="Password"> 
-      <br/>
+    <br/>
+    <a href="/forgot">Forgot Password?</a>
+    <br/>
     <button on:click={handleSubmit}>Login</button>
-    <a href="/signup">Don't have an account? click here</a>
+    <a href="/signup">Don't have an Account? Click here</a>
   </div>
   <style>
     .errorBox-display {
