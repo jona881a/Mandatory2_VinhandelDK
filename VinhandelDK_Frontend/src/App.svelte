@@ -11,7 +11,9 @@ import Navbar from "./Components/Navbar/Navbar.svelte";
 </main>
 
 <style>
-
+	:global(body) {
+		background-color: #f1f3f5;
+	}
 	main {
 		text-align: center;
 		padding: 1em;

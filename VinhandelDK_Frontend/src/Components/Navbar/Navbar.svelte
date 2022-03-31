@@ -8,8 +8,9 @@
   import { session } from "../../stores/stores.js";
 import Signup from "../../Pages/Authentication/Signup.svelte";
 import Shop from "../../Pages/Shop/Shop.svelte";
-import Basket from "../Basket/Basket.svelte";
 import Forgot from "../../Pages/Authentication/Forgot.svelte";
+import Cart from "../Cart/Cart.svelte";
+import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
 </script>
 
 <Router>
@@ -20,9 +21,9 @@ import Forgot from "../../Pages/Authentication/Forgot.svelte";
     
     <nav>
       <Link to="/">Home</Link>
-      <Link to="/explore">Wine</Link>
+      <Link to="/shop">Wine</Link>
       <Link to="/about">About</Link>
-      <Link to="/basket">Basket</Link>
+      <Link to="/cart">Cart</Link>
       {#if $session}
         <Link to="/profile">Profile</Link>
       {:else}
@@ -34,10 +35,12 @@ import Forgot from "../../Pages/Authentication/Forgot.svelte";
     <Route path="/" component={Homepage}><Homepage/></Route>
     <Route path="explore"><Shop/></Route>
     <Route path="about" component={About}><About/></Route>
-    <Route path="basket"><Basket/></Route>
+    <Route path="cart"><Cart/></Route>
+    <Route path="shop"><Shop/></Route>
     <Route path="login"><Login /></Route>
     <Route path="signup"><Signup /></Route> <!--Even though it isn't a link it can still find the component-->
     <Route path="forgot"><Forgot/></Route>
+    <Route path="changepassword"><ChangePassword/></Route>
   </div>
   <PrivateRoute path="profile" let:location>
     <Profile />

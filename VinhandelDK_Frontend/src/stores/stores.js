@@ -19,4 +19,13 @@ export const serverEndpoints = writable({
   },
 });
 
-export const basket = writable(null);
+function createCart() {
+  const { subscribe, set, update } = writable(null);
+
+  return {
+    subscribe,
+    addtoCart: () => update(),
+  };
+}
+
+export const cart = createCart();

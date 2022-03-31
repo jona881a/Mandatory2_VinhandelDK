@@ -4,7 +4,6 @@
   let email;
 
   async function handleChangePassword() {
-    email = {email : email};
 
     const url = $serverURL + $serverEndpoints.mailer.forgotpassword;
     await fetch(url, {
