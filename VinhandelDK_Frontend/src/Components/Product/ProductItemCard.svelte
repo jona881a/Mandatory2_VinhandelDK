@@ -5,7 +5,6 @@ import {
     CardBody,
     CardHeader,
     CardSubtitle,
-    CardText,
     CardTitle,
     CardImg,
   } from 'sveltestrap';
@@ -16,9 +15,9 @@ import {
 
   }
 </script>
+<div class="wrapper">
 <Card class="product-item-card">
   <div class="productimg-div">
-    <!--Lav et icon med flag som repræsentere origin-->
     <CardImg src="../../Productimages/tQ9xfrXeRy2hOWQvcjozkw_pb_x960.png" class="productitem-img"/>
   </div>
   <CardHeader>
@@ -30,23 +29,36 @@ import {
         <span class="rating">3.5</span>
         <span class="ratings">155 Ratings</span>
       </div>
-      <div class="product-info-div price-div">
-        <span>Price: </span><span> 80DKK</span>
-      </div>
       <div class="product-info-div origin-div">
-        <span>Origin</span><span></span>
+        <!-- svelte-ignore a11y-img-redundant-alt -->
+        <img alt="Image of origincountry's flag" src="../../FlagImages/united-states-of-america-flag-png-large.png" class="origin-flag-img">
+        <span class="origin-description">California, USA</span>
+      </div>
+      <div class="product-info-div price-div">
+        <span class="product-price"> 80DKK</span>
       </div>
   </CardBody>
   <Button on:click={handleAddToCard} class="add-item">Add to cart</Button>
 </Card>
+</div>
 
 <style>
+.wrapper {
+  padding: 20px;
+  width: 20rem;
+}
+
 :global(.product-item-card) {
   position: relative;
   background-color: #f8f9fa;
   width: 18rem;
-  padding-left: 10px;
+  padding: 10px 10px;
   border-radius: 16px;
+}
+
+:global(.product-item-card:hover) {
+  cursor: pointer;
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.3);
 }
 
 .productimg-div {
@@ -81,6 +93,7 @@ import {
   display: flex;
   width: 100%;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .rating-div {
@@ -98,17 +111,21 @@ import {
   color: #495057;
 }
 
+.product-price {
+  font-size: 28px;
+  text-align: center;
+}
+
 .price-div {
-  
+  align-items: center;
+  justify-content: center;
 }
 
-.origin-div {
-
-}
-
-:global(.item-price){
-  display: flex;
-  justify-content: space-between;
+.origin-flag-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 10px;
 }
 
 /*****BUTTON********/
@@ -118,16 +135,17 @@ import {
   border: none;
   color: #f8f9fa;
   background-color: #5F021F;
+  box-shadow: 0px 0px 10px 0.5px rgba(0, 0, 0, 0.336);
 }
 
 :global(.add-item:hover) {
   cursor: pointer;
-  box-shadow: 0px 0px 10px 0.5px rgba(0, 0, 0, 0.336);
-  background-color: #851135;
 }
 
-:global(.add-item:active) {
+
+:global(.add-item:not(:disabled):active) {
   background-color: #5F021F;
+  box-shadow: none;
 }
 
 </style>
