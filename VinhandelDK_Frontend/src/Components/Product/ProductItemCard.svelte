@@ -1,5 +1,6 @@
 <script>
-import {
+  import toastr from "toastr";
+  import {
     Button,
     Card,
     CardBody,
@@ -8,34 +9,54 @@ import {
     CardTitle,
     CardImg,
   } from 'sveltestrap';
+  import { cart, cartItems} from "../../stores/cartStore.js";
 
-  let rating = 3.5;
+  export let wine;
+
+  toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": true,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
 
   function handleAddToCard() {
-
+    toastr.success('Item added to cart');
   }
+
 </script>
 <div class="wrapper">
 <Card class="product-item-card">
   <div class="productimg-div">
-    <CardImg src="../../Productimages/tQ9xfrXeRy2hOWQvcjozkw_pb_x960.png" class="productitem-img"/>
+    <CardImg src="../../Productimages/{wine.prodImgRef}" class="productitem-img"/>
   </div>
   <CardHeader>
-    <CardTitle class="card-title">1000 Stories</CardTitle>
+    <CardTitle class="card-title">{wine.title}</CardTitle>
   </CardHeader>
   <CardBody class="card-body">
-    <CardSubtitle class="card-subtitle">Zinfandel</CardSubtitle>
+    <CardSubtitle class="card-subtitle">{wine.grapeVariety}</CardSubtitle>
       <div class="product-info-div rating-div">
-        <span class="rating">3.5</span>
-        <span class="ratings">155 Ratings</span>
+        <span class="rating">{wine.rating}</span>
+        <span class="ratings">{wine.ratings}</span>
       </div>
       <div class="product-info-div origin-div">
         <!-- svelte-ignore a11y-img-redundant-alt -->
-        <img alt="Image of origincountry's flag" src="../../FlagImages/united-states-of-america-flag-png-large.png" class="origin-flag-img">
-        <span class="origin-description">California, USA</span>
+        <img alt="Image of origincountry's flag" src="../../FlagImages/{wine.originImgRef}" class="origin-flag-img">
+        <span class="origin-description">{wine.origin}</span>
       </div>
       <div class="product-info-div price-div">
-        <span class="product-price"> 80DKK</span>
+        <span class="product-price"> {wine.price} DKK</span>
       </div>
   </CardBody>
   <Button on:click={handleAddToCard} class="add-item">Add to cart</Button>
@@ -72,20 +93,20 @@ import {
 }
 
 :global(.card-title) {
-   font-size: 2rem;
+   font-size: 1.7rem;
    margin: 0.5rem 0;
 }
 
 :global(.card-body) {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-} 
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
 
 :global(.card-subtitle) {
   width: fit-content;
   display: inline-block;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin: 0.5rem 0;
 }
 

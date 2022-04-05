@@ -6,11 +6,12 @@
   import PrivateRoute from "../PrivateRoutes/PrivateRoute.svelte";
   import Profile from "../../Pages/Profile/Profile.svelte";
   import { session } from "../../stores/stores.js";
-import Signup from "../../Pages/Authentication/Signup.svelte";
-import Shop from "../../Pages/Shop/Shop.svelte";
-import Forgot from "../../Pages/Authentication/Forgot.svelte";
-import Cart from "../Cart/Cart.svelte";
-import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
+  import { cartItems } from "../../stores/cartStore";
+  import Signup from "../../Pages/Authentication/Signup.svelte";
+  import Shop from "../../Pages/Shop/Shop.svelte";
+  import Forgot from "../../Pages/Authentication/Forgot.svelte";
+  import Cart from "../Cart/Cart.svelte";
+  import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
 </script>
 
 <Router>
@@ -23,7 +24,7 @@ import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
       <Link to="/">Home</Link>
       <Link to="/shop">Wine</Link>
       <Link to="/about">About</Link>
-      <Link to="/cart">Cart</Link>
+      <Link to="/cart">Cart <span class="cart-items">({$cartItems.length})</span></Link>
       {#if $session}
         <Link to="/profile">Profile</Link>
       {:else}
@@ -33,14 +34,13 @@ import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
   </header>
   <div>
     <Route path="/" component={Homepage}><Homepage/></Route>
-    <Route path="explore"><Shop/></Route>
+    <Route path="shop" component={Shop}><Shop/></Route>
     <Route path="about" component={About}><About/></Route>
-    <Route path="cart"><Cart/></Route>
-    <Route path="shop"><Shop/></Route>
-    <Route path="login"><Login /></Route>
-    <Route path="signup"><Signup /></Route> <!--Even though it isn't a link it can still find the component-->
-    <Route path="forgot"><Forgot/></Route>
-    <Route path="changepassword"><ChangePassword/></Route>
+    <Route path="cart" component={Cart}><Cart/></Route>
+    <Route path="login" component={Login}><Login /></Route>
+    <Route path="signup" component={Signup}><Signup /></Route> <!--Even though it isn't a link it can still find the component-->
+    <Route path="forgot" component={Forgot}><Forgot/></Route>
+    <Route path="changepassword" component={ChangePassword}><ChangePassword/></Route>
   </div>
   <PrivateRoute path="profile" let:location>
     <Profile />
@@ -73,4 +73,9 @@ import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
     font-size: 18px;
     padding-right: 10px;
   }
+
+  .cart-items {
+    color: #868e96;
+  }
+
 </style>

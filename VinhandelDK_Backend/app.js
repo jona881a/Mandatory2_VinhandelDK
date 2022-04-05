@@ -1,10 +1,11 @@
-import express, { application } from "express";
+import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import authRouter from "./routers/auth.js";
 import mailRouter from "./routers/mailer.js";
+import shopRouter from "./routers/shop.js";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/auth", authLimiter); //Gælder kun routes der starter med auth
 
 app.use(authRouter);
 app.use(mailRouter);
+app.use(shopRouter);
 
 const PORT = process.env.PORT || 3000;
 

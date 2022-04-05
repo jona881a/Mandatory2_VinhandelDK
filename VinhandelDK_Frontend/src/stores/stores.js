@@ -18,14 +18,3 @@ export const serverEndpoints = writable({
     forgotpassword: "/mail/forgotpassword",
   },
 });
-
-function createCart() {
-  const { subscribe, set, update } = writable(null);
-
-  return {
-    subscribe,
-    addtoCart: () => update(),
-  };
-}
-
-export const cart = createCart();

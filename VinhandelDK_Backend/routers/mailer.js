@@ -19,8 +19,7 @@ async function sendForgotPasswordMail(req, res, next) {
     from: '"Vinhandel passwordservice" <vinhandeldk@outlook.dk>',
     to: "jonaskunert@hotmail.com",
     subject: "Change of Password",
-    text: "Hello, we've recieved a request of changing the password on your vinhandel.dk account, follow this link to change the password. If this is not you you should ignore it", // plain text body
-    //html: "<>", // html body
+    html: "<p>Hello, we've recieved a request of changing the password on your vinhandel.dk account, follow this link to change the password. If this is not you you should ignore it<p/>", // html body
   });
 
   console.log("Message sent: %s", info.messageId);

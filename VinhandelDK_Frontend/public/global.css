@@ -14,16 +14,12 @@ body {
 }
 
 a {
-  color: rgb(0, 100, 200);
+  color: white;
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 a:visited {
-  color: rgb(0, 80, 160);
+  color: white;
 }
 
 label {
