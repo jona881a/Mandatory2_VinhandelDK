@@ -1,20 +1,15 @@
-import db from "./createSchemas.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-const isInDeleteMode = true;
+import mysql from "mysql";
 
-if (isInDeleteMode) {
-  db.exec("DROP TABLE IF EXISTS vinhandeldk;");
-}
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+});
 
-db.exec(`CREATE TABLE IF NOT EXISTS players (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(50) 
-);`);
+connection.connect();
 
-// Seed
-if (isInDeleteMode) {
-  db.run(`INSERT INTO players(name) VALUES ('Messi')`);
-  db.run(`INSERT INTO players(name) VALUES ('Messi')`);
-}
-
-db.close();
+export default connection;

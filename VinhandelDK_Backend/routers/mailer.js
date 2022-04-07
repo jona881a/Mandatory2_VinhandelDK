@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 import { Router } from "express";
+import dotenv from "dotenv";
+dotenv.config();
 
 const router = Router();
 
@@ -8,8 +10,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: "vinhandeldk@outlook.dk",
-    pass: "Vinhandel_DK1234",
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
   },
   tls: { rejectUnauthorized: false },
 });

@@ -9,7 +9,7 @@
     CardTitle,
     CardImg,
   } from 'sveltestrap';
-  import { cart, cartItems} from "../../stores/cartStore.js";
+  //import { cart, cartItems} from "../../stores/cartStore.js";
 
   export let wine;
 
@@ -31,28 +31,28 @@
   "hideMethod": "fadeOut"
 }
 
-  function handleAddToCard() {
-    toastr.success('Item added to cart');
-  }
+function handleAddToCard() {
+  toastr.success('Item added to cart');
+}
 
 </script>
 <div class="wrapper">
 <Card class="product-item-card">
   <div class="productimg-div">
-    <CardImg src="../../Productimages/{wine.prodImgRef}" class="productitem-img"/>
+    <CardImg src="../../Productimages/{wine.prod_img_ref}" class="productitem-img"/>
   </div>
   <CardHeader>
     <CardTitle class="card-title">{wine.title}</CardTitle>
   </CardHeader>
   <CardBody class="card-body">
-    <CardSubtitle class="card-subtitle">{wine.grapeVariety}</CardSubtitle>
+    <CardSubtitle class="card-subtitle">{wine.grape_variety}</CardSubtitle>
       <div class="product-info-div rating-div">
         <span class="rating">{wine.rating}</span>
         <span class="ratings">{wine.ratings}</span>
       </div>
       <div class="product-info-div origin-div">
         <!-- svelte-ignore a11y-img-redundant-alt -->
-        <img alt="Image of origincountry's flag" src="../../FlagImages/{wine.originImgRef}" class="origin-flag-img">
+        <img alt="Image of origincountry's flag" src="../../FlagImages/{wine.origin_img_ref}" class="origin-flag-img">
         <span class="origin-description">{wine.origin}</span>
       </div>
       <div class="product-info-div price-div">
