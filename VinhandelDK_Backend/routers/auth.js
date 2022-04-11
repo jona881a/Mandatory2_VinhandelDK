@@ -1,105 +1,123 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
-import { accountTabel } from "../db.js";
 import session from "express-session";
-import nodemailer from "nodemailer";
+import db from "../database/createConnection.js";
 
 const router = Router();
 const saltRounds = 12;
 let userToSend;
 
+/******************************/
+/***********Functions**********/
+/******************************/
+
 async function checkLoginInfo(req, res, next) {
   const user = req.body;
 
-  const foundUser = accountTabel.find(
-    (correctUser) => correctUser.username === user.username
-  );
-
-  if (foundUser) {
-    const correctPassword = await bcrypt.compare(
-      user.password,
-      foundUser.password
-    );
-    if (!correctPassword) {
-      res.status(404).send({ message: "Username or password is not correct" });
-    } else {
-      userToSend = foundUser;
-      next();
+  db.query(
+    `SELECT * FROM users WHERE username = '${user.username}';`,
+    async (err, data) => {
+      if (data[0]) {
+        let foundUser = data[0];
+        const correctPassword = await bcrypt.compare(
+          user.password,
+          foundUser.password
+        );
+        if (!correctPassword) {
+          res
+            .status(404)
+            .send({ message: "Username or password is not correct" });
+        } else {
+          userToSend = foundUser;
+          next();
+        }
+      } else {
+        res
+          .status(404)
+          .send({ message: "Username or password is not correct" });
+      }
     }
-  } else {
-    res.status(404).send({ message: "Username or password is not correct" });
-  }
+  );
 }
 
 async function createUser(req, res, next) {
-  const userAlreadyExists = accountTabel.find(
-    (existingUser) => existingUser.username === req.body.username
+  const user = req.body;
+  db.query(
+    `SELECT * FROM users WHERE username = '${user.username}';`,
+    async (err, data) => {
+      if (data[0]) {
+        //409: Conflict
+        res.status(409).send({
+          message: `User with ${user.username} already exists. `,
+        });
+      } else {
+        const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+        const newUser = { ...user, password: hashedPassword };
+
+        db.query(
+          `INSERT INTO users(fullname,email,username,password) VALUES('${newUser.fullname}','${newUser.email}','${newUser.username}','${newUser.password}');`
+        );
+        next();
+      }
+    }
   );
-
-  if (userAlreadyExists) {
-    //409: Conflict
-    res.status(409).send({
-      message: `User with ${req.body.username} already exists. `,
-    });
-  } else {
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-    const newUser = { ...req.body, password: hashedPassword };
-
-    accountTabel.push(newUser);
-    next();
-  }
 }
 
 async function checkValidPassword(req, res, next) {
   const user = req.body;
 
-  const foundUserIndex = accountTabel.findIndex(
-    (requestedUser) => requestedUser.username === user.username
-  );
+  db.query(
+    `SELECT * FROM users WHERE username = '${user.username}';`,
+    async (err, data) => {
+      if (data[0]) {
+        const existingUser = data[0];
+        const existingPassword = await bcrypt.compare(
+          user.password,
+          existingUser.password
+        );
 
-  if (foundUserIndex !== -1) {
-    const existingUser = accountTabel[foundUserIndex];
-
-    const correctPassword = await bcrypt.compare(
-      user.password,
-      existingUser.password
-    );
-
-    if (correctPassword) {
-      res
-        .status(409)
-        .send({ message: "Password cannot be the same as old one" });
-    } else {
-      const updatedUser = { ...existingUser, ...user, password: user.password };
-      accountTabel[foundUserIndex] = updatedUser;
-      next();
+        if (existingPassword) {
+          res
+            .status(409)
+            .send({ message: "Password cannot be the same as old one" });
+        } else {
+          const updatedUser = {
+            ...existingUser,
+            ...user,
+            password: user.password,
+          };
+          db.query(
+            `UPDATE users SET(?,?,?,?) WHERE username = ?`,
+            updatedUser.fullname,
+            updatedUser.email,
+            updatedUser.username,
+            updatedUser.password,
+            updatedUser.username
+          );
+        }
+      } else {
+        res
+          .status(404)
+          .send({ message: "The user doesn't exist with the specified email" });
+      }
     }
-  } else {
-    res
-      .status(404)
-      .send({ message: "The user doesn't exist with the specified email" });
-  }
+  );
 }
 
 async function changeUser(req, res, next) {
   const user = req.body;
 
-  console.log(user);
-
-  const userIndex = accountTabel.findIndex(
-    (requestedUser) => requestedUser.username === user.username
+  db.query(
+    `UPDATE users SET fullname ='${user.fullname}', email='${user.email}' WHERE(username = '${user.username}');`,
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(404).send({ message: "The user cannot be found" });
+      }
+      userToSend = user;
+      next();
+    }
   );
-
-  if (userIndex !== -1) {
-    const userToEdit = accountTabel[userIndex];
-
-    const updatedUser = { ...userToEdit, ...user };
-    accountTabel[userIndex] = updatedUser;
-    userToSend = updatedUser;
-    next();
-  } else {
-    res.status(404).send({ message: "The user cannot be found" });
-  }
 }
 
 /***************************/
@@ -120,7 +138,7 @@ router.get("/auth/signout", (req, res) => {
 
 router.post("/auth/signup", createUser, (req, res) => {
   res.status(201).send({
-    data: accountTabel,
+    message: `Successfully created user, you may now login`,
   });
 });
 

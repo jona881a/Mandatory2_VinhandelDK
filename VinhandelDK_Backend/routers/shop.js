@@ -4,8 +4,6 @@ import db from "../database/createConnection.js";
 
 const router = Router();
 
-let wineList = [];
-
 router.get("/shop", (req, res) => {
   db.query(`SELECT * FROM wine`, (err, results) => {
     if (err) {
