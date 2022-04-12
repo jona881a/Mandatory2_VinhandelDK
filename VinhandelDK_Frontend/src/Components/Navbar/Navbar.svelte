@@ -6,12 +6,14 @@
   import PrivateRoute from "../PrivateRoutes/PrivateRoute.svelte";
   import Profile from "../../Pages/Profile/Profile.svelte";
   import { session } from "../../stores/stores.js";
-  import { cartItems } from "../../stores/cartStore";
+  import { itemsInCart } from "../../stores/cartStore";
   import Signup from "../../Pages/Authentication/Signup.svelte";
   import Shop from "../../Pages/Shop/Shop.svelte";
   import Forgot from "../../Pages/Authentication/Forgot.svelte";
   import Cart from "../Cart/Cart.svelte";
   import ChangePassword from "../../Pages/Authentication/ChangePassword.svelte";
+
+
 </script>
 
 <Router>
@@ -24,7 +26,7 @@
       <Link to="/">Home</Link>
       <Link to="/shop">Wine</Link>
       <Link to="/about">About</Link>
-      <Link to="/cart">Cart <span class="cart-items">({$cartItems.length})</span></Link>
+      <Link to="/cart"><i class="fa-solid fa-basket-shopping"></i> <span class="cart-items">({$itemsInCart})</span></Link>
       {#if $session}
         <Link to="/profile">Profile</Link>
       {:else}
@@ -77,5 +79,6 @@
   .cart-items {
     color: #868e96;
   }
+
 
 </style>

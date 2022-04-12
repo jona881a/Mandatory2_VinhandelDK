@@ -9,31 +9,19 @@
     CardTitle,
     CardImg,
   } from 'sveltestrap';
-  //import { cart, cartItems} from "../../stores/cartStore.js";
+  import { cartContents, totalPrice, itemsInCart } from "../../stores/cartStore.js";
+
+  toastr.options = {
+    "closeButton": true,
+  }
 
   export let wine;
 
-  toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": true,
-  "progressBar": false,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
-
-function handleAddToCard() {
-  toastr.success('Item added to cart');
-}
+  function handleAddToCard() {
+    itemsInCart.update(items => items + 1);
+    cartContents.update(contents => [...contents, wine])
+    toastr.success('Item added to cart');
+  }
 
 </script>
 <div class="wrapper">

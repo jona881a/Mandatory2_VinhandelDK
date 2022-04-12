@@ -22,7 +22,6 @@
       body: JSON.stringify(userCredentials)})
       .then(response => response.json())
       .then(data => { 
-        console.log(data);
         if(data.message) {
           errorMessage = data.message;
           displayErrorBox = 'errorBox-display';
@@ -39,7 +38,7 @@
     <h3>Login</h3>
     <div class={displayErrorBox}>{errorMessage}</div>
     <input class="login" bind:value={username} name="username" type="text" placeholder="Username">
-      <br/>
+    <br/>
     <input class="password" bind:value={password} name="password" type="password" placeholder="Password"> 
     <br/>
     <a href="/forgot">Forgot Password?</a>

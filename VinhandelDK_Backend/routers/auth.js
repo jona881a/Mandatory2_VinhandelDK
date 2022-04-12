@@ -1,6 +1,5 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
-import session from "express-session";
 import db from "../database/createConnection.js";
 
 const router = Router();
@@ -28,7 +27,11 @@ async function checkLoginInfo(req, res, next) {
             .status(404)
             .send({ message: "Username or password is not correct" });
         } else {
-          userToSend = foundUser;
+          userToSend = {
+            fullname: foundUser.fullname,
+            email: foundUser.email,
+            username: foundUser.username,
+          };
           next();
         }
       } else {
@@ -125,7 +128,6 @@ async function changeUser(req, res, next) {
 /***************************/
 
 router.post("/auth/login", checkLoginInfo, (req, res) => {
-  req.session.loggedIn = true;
   req.session.user = userToSend;
   res.status(200).send({ session: req.session });
 });

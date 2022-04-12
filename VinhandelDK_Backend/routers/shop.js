@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { wineTabel } from "../db.js";
 import db from "../database/createConnection.js";
 
 const router = Router();

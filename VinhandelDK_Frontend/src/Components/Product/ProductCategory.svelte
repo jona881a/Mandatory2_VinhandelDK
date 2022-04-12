@@ -62,7 +62,7 @@
 
   :global(.product-collapsible) {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     /* justify-content: center; */
   }
 
@@ -72,7 +72,7 @@
         grid-template-columns: repeat(3, 1fr);
     }
   }
-
+  
   @media screen and (max-width: 1080px) {
     :global(.product-collapsible){
         grid-template-columns: repeat(2, 1fr);

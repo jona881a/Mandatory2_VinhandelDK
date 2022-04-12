@@ -6,6 +6,8 @@ import session from "express-session";
 import authRouter from "./routers/auth.js";
 import mailRouter from "./routers/mailer.js";
 import shopRouter from "./routers/shop.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 

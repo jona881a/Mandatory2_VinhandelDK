@@ -1,9 +1,11 @@
 <script>
   import { serverURL, serverEndpoints } from "../../stores/stores.js";
+  import toastr from "toastr";
 
   let email;
 
   async function handleChangePassword() {
+    toastr.success(`An email to ${email} has been sent`);
 
     const url = $serverURL + $serverEndpoints.mailer.forgotpassword;
     await fetch(url, {

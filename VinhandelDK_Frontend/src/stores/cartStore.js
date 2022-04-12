@@ -1,14 +1,9 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 
-// function createCart() {
-//   const { subscribe, set, update } = writable([]);
+export const itemsInCart = writable(0);
 
-//   return {
-//     subscribe,
-//     addtoCart: (item) => update((cartItems) => cartItems.push(item)),
-//     removeFromCart: () => update((n) => cartItems.remove),
-//   };
-// }
-export const cartItems = writable([]);
+export const cartContents = writable([]);
 
-//export const cart = createCart();
+export const totalPrice = derived(cartContents, ($cartContents) =>
+  $cartContents.forEach((item) => (item.price += totalPrice))
+);
