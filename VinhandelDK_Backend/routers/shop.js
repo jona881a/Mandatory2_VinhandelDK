@@ -12,4 +12,6 @@ router.get("/shop", (req, res) => {
   });
 });
 
+router.post("/purchase", (req, res) => {});
+
 export default router;

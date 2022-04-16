@@ -27,8 +27,25 @@ async function sendForgotPasswordMail(req, res, next) {
   console.log("Message sent: %s", info.messageId);
 }
 
+async function sendConfirmationMail(req, res, next) {
+  const info = await transporter.sendMail({
+    from: '"Jens from Vinhandel DK" <vinhandeldk@outlook.dk>',
+    to: "jonaskunert@hotmail.com",
+    subject: "Confirmation of Purchase",
+    html: "<p>We have recieved your order and are packing it right as we speak<p/>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+}
+
 router.post("/mail/forgotpassword", sendForgotPasswordMail, (req, res) => {
   res.status(200).send({ message: "Email has been send to your account" });
+});
+
+router.post("/mail/purchase-confirmation", sendConfirmationMail, (req, res) => {
+  res
+    .status(200)
+    .send({ message: "Email has been send with purchase details" });
 });
 
 export default router;

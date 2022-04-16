@@ -1,9 +1,6 @@
 <script>
   import {
-    Button,
     Card,
-    CardBody,
-    CardHeader,
     CardSubtitle,
     CardTitle,
     CardImg,
@@ -16,18 +13,18 @@
       <CardImg src="../../Productimages/{cartItem.prod_img_ref}" class="cartitem-img"/>
     </div>
     <div class="item-body">
-      <div class="product-info-div">
+      <div class="product-info-div grid-1">
         <CardTitle class="item-title">{cartItem.title}</CardTitle>
       </div>
-      <div class="product-info-div">
-        <CardSubtitle class="item-subtitle">{cartItem.grape_variety}</CardSubtitle>
-      </div>
-      <div class="product-info-div">
+      <div class="product-info-div grid-2">
         <!-- svelte-ignore a11y-img-redundant-alt -->
         <img alt="Image of origincountry's flag" src="../../FlagImages/{cartItem.origin_img_ref}" class="origin-flag-img">
         <span class="origin-description">{cartItem.origin}</span>
       </div>
-      <div class="product-info-div">
+      <div class="product-info-div grid-3">
+        <CardSubtitle class="item-subtitle">{cartItem.grape_variety}</CardSubtitle>
+      </div>
+      <div class="product-info-div grid-4">
         <span class="product-price"> {cartItem.price} DKK</span>
       </div>
     </div>
@@ -37,8 +34,9 @@
   
   :global(.cartitem-card) {
     display: flex;
+    justify-content: space-between;
     width: 100%;
-    height: 200px;
+    height: 150px;
     position: relative;
     background-color: #f8f9fa;
     padding: 10px 10px;
@@ -62,10 +60,19 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
+
+  .grid-1,
+  .grid-2 {
+    align-self: end;
+  }
+
+  .grid-2,
+  .grid-4 {
+    margin-left: 20px;
+  }
   
   :global(.card-title) {
      font-size: 1.7rem;
-     margin: 0.5rem 0;
   }
   
   :global(.card-subtitle) {
