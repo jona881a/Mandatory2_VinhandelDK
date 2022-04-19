@@ -57,4 +57,8 @@
     .errorBox-display-none {
       display: none;
     }
+
+    a {
+      color: black;
+    }
   </style>
